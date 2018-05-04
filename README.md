@@ -76,7 +76,7 @@ After we have successfully compiled the code and created the python "pyd" DLL we
 extension module.
 
 Example:
-```
+```python
 # file: runme.py
 
 import fib
