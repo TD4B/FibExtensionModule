@@ -50,7 +50,7 @@ Lastly, we need to create a python DLL linker to our Compiled files in order to 
 ```
 cmd$>i686-w64-mingw32-g++ -shared -I C:\Python27\include -L C:\Python27\libs fib.o fib_wrap.o -o _fib.pyd -lpython27
 ```
-Note: If you get an error with a definition you need to browse to the location to rename the string since some of the modules get renamed to "_filename" during the compilation.
+Note: If you get an error with a definition you need to browse to the location to rename the string since some of the modules get renamed to "_module" during the compilation.
 ```
 Example:
 /include/c++/cmath:1136:11: error: '::hypot' has not been declared
