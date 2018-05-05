@@ -32,6 +32,7 @@ cmd$> swig -c++ -python fib.i
 ```
 This generates a fib.py file as well as a fib_wrapper.cxx (C++ file).
 Next we need to compile our C++ code using distutils. We Create a "setup.py" file that links to our pre-compiled files.
+Note that our pre-compiled code and the wrapper python file are linked to in the setup portion.
 ```python
 # setup.py file
 
