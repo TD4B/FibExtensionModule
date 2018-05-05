@@ -1,9 +1,7 @@
 # FibExtensionModule
 Just a short guide on writing C++ extension modules with SWIG for Python.
 
-For this module the C++ code was compiled with Mingw64 (i686-w64-mingw32-g++)
-
-The first step is installing Mingw64 and SWIG after doing so the Mingw /bin/ files (.exe) and the SWIG (.exe) files should be set to your environment variables so they can be called from the command line.
+For this module the C++ code can be easily compiled using the Builtin Distutils module from Python.
 
 First step is to actually write and debug the C++ function you want to interface with Python.
 
@@ -33,45 +31,27 @@ Using Swig we prep our Module.
 cmd$> swig -c++ -python fib.i
 ```
 This generates a fib.py file as well as a fib_wrapper.cxx (C++ file).
-Next we need to compile our C++ code (Mingw64) and then generate the phython DLL file so we can load our module.
-We have to be sure to include the python Include header files!
-```
-cmd$> i686-w64-mingw32-g++ -c fib.cpp -I C:\Python27\include
-```
-Then Compile the wrapper code.
-```
-cmd$> i686-w64-mingw32-g++ -c fib_wrap.cxx -I C:\Python27\include
-```
-This leaves us with two compiled O files.
-```
-fib.o & fib_wrap.o
-```
-Lastly, we need to create a python DLL linker to our Compiled files in order to load the Module in python.
-```
-cmd$> i686-w64-mingw32-g++ -shared -I C:\Python27\include -L C:\Python27\libs fib.o fib_wrap.o -o _fib.pyd -lpython27
-```
-Note: If you get an error with a definition you need to browse to the location to rename the string since some of the modules get renamed to "_module" during the compilation.
-```
-Example:
-/include/c++/cmath:1136:11: error: '::hypot' has not been declared
-using ::hypot;
-           ^~~~~
-i686-w64-mingw32-g++ -c fib.cpp
-fib.cpp:4:10: fatal error: Python.h: No such file or directory
- #include <Python.h>
-          ^~~~~~~~~~
-compilation terminated.
+Next we need to compile our C++ code using distutils. We Create a "setup.py" file that links to our pre-compiled files.
+```python
+# setup.py file
 
-i686-w64-mingw32-g++ -c fib.cpp -I C:\Python27\include
-In file included from C:\Python27\include/Python.h:8:0,
-                 from fib.cpp:4:
-C:\Python27\include/pyconfig.h:285:15: error: 'std::_hypot' has not been declared
- #define hypot _hypot
+from distutils.core import setup, Extension
+
+ext_module = Extension('_fib',
+                           sources=['fib_wrap.cxx', 'fib.cpp'],
+                           )
+
+setup (name = 'fib_calculator',
+       version = '0.1',
+       author      = "TD4B",
+       description = """Fibbonacci Calculator""",
+       ext_modules = [ext_module],
+       py_modules = ["fib"],
+       )
 ```
-This can be fixed by modifying the included file so that when the module is loaded it calls the correct name.
-In the example above, browsing to cmath and changing the below parameters fixes the compilation error.
+After creating the setup file we can compile our code into a python extension module using Distutils.
 ```
-#define hypot to #define _hypot
+cmd$> python setup.py build_ext --inplace
 ```
 After we have successfully compiled the code and created the python "pyd" DLL we are all set for loading and running our C++
 extension module.
