@@ -36,11 +36,11 @@ This generates a fib.py file as well as a fib_wrapper.cxx (C++ file).
 Next we need to compile our C++ code (Mingw64) and then generate the phython DLL file so we can load our module.
 We have to be sure to include the python Include header files!
 ```
-i686-w64-mingw32-g++ -c fib.cpp -I C:\Python27\include
+cmd$> i686-w64-mingw32-g++ -c fib.cpp -I C:\Python27\include
 ```
 Then Compile the wrapper code.
 ```
-i686-w64-mingw32-g++ -c fib_wrap.cxx -I C:\Python27\include
+cmd$> i686-w64-mingw32-g++ -c fib_wrap.cxx -I C:\Python27\include
 ```
 This leaves us with two compiled O files.
 ```
@@ -48,9 +48,10 @@ fib.o & fib_wrap.o
 ```
 Lastly, we need to create a python DLL linker to our Compiled files in order to load the Module in python.
 ```
-i686-w64-mingw32-g++ -shared -I C:\Python27\include -L C:\Python27\libs fib.o fib_wrap.o -o _fib.pyd -lpython27
-
+cmd$>i686-w64-mingw32-g++ -shared -I C:\Python27\include -L C:\Python27\libs fib.o fib_wrap.o -o _fib.pyd -lpython27
+```
 Note: If you get an error with a definition you need to browse to the location to rename the string since some of the modules get renamed to "_filename" during the compilation.
+```
 Example:
 /include/c++/cmath:1136:11: error: '::hypot' has not been declared
 using ::hypot;
