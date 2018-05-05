@@ -1,5 +1,5 @@
 # FibExtensionModule
-Just a short guide on writing Python C++ extension modules with SWIG
+Just a short guide on writing C++ extension modules with SWIG for Python.
 
 For this module the C++ code was compiled with Mingw64 (i686-w64-mingw32-g++)
 
